@@ -1,0 +1,35 @@
+version: '3.1'
+services:
+
+  backend:
+    build:
+      context: .
+      # context: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mydb
+    # links:
+    #   - mydb
+    container_name: backend
+
+  mydb:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    container_name: mydb
+    # ports:
+    #   - "3306:3306"
+    # expose: 
+    #   - 3306
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 3030:8080
+    depends_on:
+      - "mydb"
+    container_name: adminer
